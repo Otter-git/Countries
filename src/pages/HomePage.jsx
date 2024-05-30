@@ -53,7 +53,7 @@ export const HomePage = () => {
             return (
               <Card
                 key={c.name.official}
-                onClick={() => navigate(`/country/${c.name}`)}
+                onClick={() => navigate(`/country/${c.name.official}`)}
                 {...countryInfo}
               />
             );

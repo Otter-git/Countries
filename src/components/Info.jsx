@@ -1,4 +1,9 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBorders } from '../store/details/details-selectors';
+import { useEffect } from 'react';
+import { loadBorders } from '../store/details/details-actions';
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -89,32 +94,43 @@ const Tag = styled.span`
 export const Info = (props) => {
   const {
     name,
-    nativeName,
-    flag,
+    flags,
     capital,
     population,
     region,
     subregion,
-    topLevelDomain,
-    currencies = [],
-    languages = [],
-    borders = [],
-    push,
-  } = props;
+    currencies,
+    languages,
+    borders,
+    maps,
+    status,
+    tld
+  } = Object.values(props)[0];
+  const { push } = Object.values(props);
+
+  console.log(props);
+
+  const dispatch = useDispatch();
+  const neighbors = useSelector(selectBorders);
+
+  useEffect(() => {
+    if (borders) {
+      dispatch(loadBorders(borders));
+    }
+  }, [borders, dispatch]);
 
   return (
     <Wrapper>
-      <InfoImage src={flag} alt={name} />
-
+      <InfoImage src={flags.svg} alt={flags.alt} />
       <div>
-        <InfoTitle>{name}</InfoTitle>
+        <InfoTitle>{name.official}</InfoTitle>
         <ListGroup>
           <List>
             <ListItem>
-              <b>Native Name:</b> {nativeName}
+              <b>Native Name:</b> {name.common}
             </ListItem>
             <ListItem>
-              <b>Population</b> {population}
+              <b>Population:</b> {population}
             </ListItem>
             <ListItem>
               <b>Region:</b> {region}
@@ -128,34 +144,41 @@ export const Info = (props) => {
           </List>
           <List>
             <ListItem>
-              <b>Top Level Domain</b>{' '}
-              {topLevelDomain.map((d) => (
-                <span key={d}>{d}</span>
+              <b>Currency:</b>{' '}
+              {<span key={Object.values(currencies)[0].name}>
+                {Object.values(currencies)[0].name} ({Object.values(currencies)[0].symbol})
+              </span>}
+            </ListItem>
+            <ListItem>
+              <b>Languages:</b>{' '}
+              {(Object.values(languages)).map((l) => (
+                <span key={l}>{l} </span>
               ))}
             </ListItem>
             <ListItem>
-              <b>Currency</b>{' '}
-              {currencies.map((c) => (
-                <span key={c.code}>{c.name} </span>
-              ))}
+              <b>Map:</b>{' '}
+              <Link to={maps.googleMaps}>{name.common}</Link>
             </ListItem>
             <ListItem>
-              <b>Top Level Domain</b>{' '}
-              {languages.map((l) => (
-                <span key={l.name}>{l.name}</span>
+              <b>Status:</b> {status}
+            </ListItem>
+            <ListItem>
+              <b>Top Level Domain:</b>{' '}
+              {tld.map((t) => (
+                <span key={t}>{t} </span>
               ))}
             </ListItem>
           </List>
         </ListGroup>
         <Meta>
           <b>Border Countries</b>
-          {!borders.length ? (
+          {!borders ? (
             <span>There is no border countries</span>
           ) : (
             <TagGroup>
-              {[].map((b) => (
-                <Tag key={b} onClick={() => push(`/country/${b}`)}>
-                  {b}
+              {neighbors.map((countryName) => (
+                <Tag key={countryName} onClick={() => push(`/country/${countryName}`)}>
+                  {countryName}
                 </Tag>
               ))}
             </TagGroup>
