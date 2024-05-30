@@ -106,7 +106,7 @@ export const Info = (props) => {
     status,
     tld
   } = Object.values(props)[0];
-  const { push } = Object.values(props);
+  const { push } = props;
 
   console.log(props);
 
@@ -177,7 +177,7 @@ export const Info = (props) => {
           ) : (
             <TagGroup>
               {neighbors.map((countryName) => (
-                <Tag key={countryName} onClick={() => push(`/country/${countryName}`)}>
+                < Tag key={countryName} onClick={() => push(`/country/${countryName}`)}>
                   {countryName}
                 </Tag>
               ))}
@@ -185,6 +185,6 @@ export const Info = (props) => {
           )}
         </Meta>
       </div>
-    </Wrapper>
+    </Wrapper >
   );
 };
