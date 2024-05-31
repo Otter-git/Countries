@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const loadCountries = createAsyncThunk(
   '@@countries/load-countries',
-  async (_, { extra: { client, api }, }) => {
+  (_, { extra: { client, api }, }) => {
     return client.get(api.ALL_COUNTRIES)
   }
 );
@@ -30,7 +30,6 @@ const countrySlice = createSlice({
       .addCase(loadCountries.fulfilled, (state, action) => {
         state.status = 'received';
         state.list = action.payload.data;
-        console.log(state.status);
       })
   },
 });

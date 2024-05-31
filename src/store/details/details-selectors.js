@@ -1,3 +1,3 @@
-export const selectCurrentCountry = (state) => state.details.currentCountry;
-export const selectDetails = (state) => state.details;
-export const selectBorders = (state) => state.details.borders;
+// export const selectCurrentCountry = (state) => state.details.currentCountry;
+// export const selectDetails = (state) => state.details;
+// export const selectBorders = (state) => state.details.borders;

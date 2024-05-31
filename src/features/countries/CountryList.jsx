@@ -10,7 +10,6 @@ const CountryList = () => {
   const navigate = useNavigate();
 
   const [countries, { status, error }] = useCountries();
-  console.log(countries);
 
   return (
     <>

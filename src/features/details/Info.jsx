@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectBorders } from '../store/details/details-selectors';
-import { useEffect } from 'react';
-import { loadBorders } from '../store/details/details-actions';
+import { useBorders } from './use-borders';
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -104,20 +101,13 @@ export const Info = (props) => {
     borders,
     maps,
     status,
-    tld
-  } = Object.values(props)[0];
-  const { push } = props;
+    tld,
+    push
+  } = props;
+
+  const neighbors = useBorders(borders);
 
   console.log(props);
-
-  const dispatch = useDispatch();
-  const neighbors = useSelector(selectBorders);
-
-  useEffect(() => {
-    if (borders) {
-      dispatch(loadBorders(borders));
-    }
-  }, [borders, dispatch]);
 
   return (
     <Wrapper>
