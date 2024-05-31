@@ -7,13 +7,27 @@ import { controlsReducer } from "./features/controls/controls-slice";
 import { countryReducer } from "./features/countries/countries-slice";
 import { detailsReducer } from "./features/details/details-slice";
 
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
+import { combineReducers } from "redux";
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['theme'],
+};
+
+const reducers = combineReducers({
+  theme: themeReducer,
+  controls: controlsReducer,
+  countries: countryReducer,
+  details: detailsReducer,
+})
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 export const store = configureStore({
-  reducer: {
-    theme: themeReducer,
-    controls: controlsReducer,
-    countries: countryReducer,
-    details: detailsReducer,
-  },
+  reducer: persistedReducer,
   devTools: true,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     thunk: {
@@ -25,3 +39,5 @@ export const store = configureStore({
     serializableCheck: false,
   })
 });
+
+export const persistor = persistStore(store);

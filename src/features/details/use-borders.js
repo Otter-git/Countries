@@ -7,7 +7,7 @@ export const useBorders = (borders) => {
   const neighbors = useSelector(selectBorders);
 
   useEffect(() => {
-    if (borders.length) {
+    if (borders) {
       dispatch(loadNeighborsByBorder(borders));
     }
   }, [borders, dispatch]);
